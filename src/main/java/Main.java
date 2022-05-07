@@ -11,20 +11,19 @@ public class Main {
         AuctionDAO auctionDAO = new AuctionDAO();
         LotDAO lotDAO = new LotDAO();
         UserDAO userDAO = new UserDAO();
-        BidHistoryDAO bidhistoryDAO = new BidHistoryDAO();
 
-        BidderService bidderService = new BidderService(lotDAO, auctionDAO, userDAO, bidhistoryDAO);
+        BidderService bidderService = new BidderService(lotDAO, auctionDAO, userDAO);
 
         bidderService.displayAuction(1);
-        bidderService.displayLot(1);
-        bidderService.place_bid(1, 2300, 1);
-        bidderService.displayLot(1);
-        bidderService.place_bid(1, 2800, 2);
         bidderService.displayLot(1);
         bidderService.retract_bid(1, 2);
         bidderService.displayLot(1);
 
-        SellerService sellerService = new SellerService(lotDAO, auctionDAO, userDAO, bidhistoryDAO);
+        bidderService.displayBidsByUser(1);
+
+        System.out.println("ALTCEVA");
+
+        SellerService sellerService = new SellerService(lotDAO, auctionDAO, userDAO);
 
         sellerService.createAuction(3, "test auction", LocalDateTime.of(2022, 6,2,5,0,0), "detalii");
         bidderService.displayAuction(3);

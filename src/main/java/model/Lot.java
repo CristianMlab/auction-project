@@ -7,7 +7,7 @@ public class Lot {
     private String item_title;
     private Item item;
     private int id;
-    private int starting_bid;
+    private double starting_bid;
     private int auction_id;
 
     private Bid_History bids;
@@ -44,7 +44,7 @@ public class Lot {
         return id;
     }
 
-    public int last_bid_value(){
+    public double last_bid_value(){
         return bids.get_last_bid().getValue();
     }
 
@@ -61,14 +61,14 @@ public class Lot {
     }
 
     public void bid(int value, int user_id){
-        int last_bid;
+        double last_bid;
         LocalDateTime current_date = LocalDateTime.now();
         if(current_date.isAfter(closing_datetime)){
             System.out.println("The lot is closed, a bid cannot be placed");
         } else {
-            Bid new_bid = new Bid(value, current_date, user_id);
+            Bid new_bid = new Bid(value, current_date, user_id, id);
             if (bids.get_last_bid() == null)
-                last_bid = starting_bid;
+                last_bid = starting_bid/1.1;
             else
                 last_bid = last_bid_value();
             if (value < 1.1 * last_bid) {

@@ -2,21 +2,23 @@ package model;
 import java.time.LocalDateTime;
 
 public class Bid {
-    private int value;
+    private double value;
     private LocalDateTime time;
     private int user_id;
+    private int lot_id;
 
-    public Bid(int value, LocalDateTime time, int user_id) {
+    public Bid(int value, LocalDateTime time, int user_id, int lot_id) {
         this.value = value;
         this.time = time;
         this.user_id = user_id;
+        this.lot_id = lot_id;
     }
 
     public void display(){
-        System.out.println(time + " : " + value + " placed by user " + user_id);
+        System.out.println("Bid for " + value + " on lot ID " + lot_id +" placed by user ID " + user_id + " at time: " + time);
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
@@ -38,5 +40,9 @@ public class Bid {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public int getLot_id() {
+        return lot_id;
     }
 }

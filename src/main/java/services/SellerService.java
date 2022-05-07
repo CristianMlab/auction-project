@@ -12,13 +12,11 @@ public class SellerService {
     private LotDAO lotDAO;
     private AuctionDAO auctionDAO;
     private UserDAO userDAO;
-    private BidHistoryDAO bidhistoryDAO;
 
-    public SellerService(LotDAO lotDAO, AuctionDAO auctionDAO, UserDAO userDAO, BidHistoryDAO bidhistoryDAO) {
+    public SellerService(LotDAO lotDAO, AuctionDAO auctionDAO, UserDAO userDAO) {
         this.lotDAO = lotDAO;
         this.auctionDAO = auctionDAO;
         this.userDAO = userDAO;
-        this.bidhistoryDAO = bidhistoryDAO;
     }
 
     public void createDefaultLot(int lot_id, int auction_id, String item_title, String description, int starting_bid, LocalDateTime closing_datetime){

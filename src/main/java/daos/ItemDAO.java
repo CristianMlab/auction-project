@@ -7,7 +7,6 @@ import model.Ring;
 import java.util.ArrayList;
 
 public class ItemDAO {
-    //lot_id la Item
     private ArrayList<Item> items = new ArrayList<>();
 
     public ItemDAO(){
