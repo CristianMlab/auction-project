@@ -22,3 +22,8 @@ Bidder
 Seller
 - Create auctions
 - Create lots and add them to auctions
+
+Admin
+- Delete auctions
+- Delete lots
+- Delete bids
