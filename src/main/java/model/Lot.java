@@ -1,39 +1,64 @@
 package model;
 
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
+
 import java.time.LocalDateTime;
 import java.time.Duration;
+import java.time.format.DateTimeFormatter;
 
 public class Lot {
-    private String item_title;
-    private Item item;
+    @CsvBindByName(column = "ID")
     private int id;
-    private double starting_bid;
+
+    @CsvBindByName(column = "AUCTION_ID")
     private int auction_id;
 
-    private Bid_History bids;
+    @CsvBindByName(column = "LOT_NAME")
+    private String lot_name;
+
+    @CsvBindByName(column = "STARTING_BID")
+    private double starting_bid;
+
+    @CsvDate(value = "yyyy-MM-dd HH:mm:ss")
+    @CsvBindByName(column = "CLOSING_DATETIME")
     private LocalDateTime closing_datetime;
 
-    public Lot(int id, int auction_id, String item_title, Item item, int starting_bid, LocalDateTime closing_datetime) {
-        this.item_title = item_title;
-        if(item.get_lot_id() != id){
-            this.item = new Default_item(id, "an error occured");
-        } else {
-            this.item = item;
-        }
-        this.item = item;
+    private Bid_History bids;
+    private Default_item item;
+
+    public static String getHeader(){
+        return "ID,AUCTION_ID,LOT_NAME,STARTING_BID,CLOSING_DATETIME";
+    }
+
+    public Lot(String lot_name,int id, double starting_bid, int auction_id, LocalDateTime closing_datetime) {
+        this.lot_name = lot_name;
         this.id = id;
         this.starting_bid = starting_bid;
-        this.closing_datetime = closing_datetime;
-        this.bids = new Bid_History(id);
         this.auction_id = auction_id;
+        this.closing_datetime = closing_datetime;
+    }
+
+    public Lot(){}
+
+    public String toString(){
+        return id + "," + auction_id + "," + lot_name + "," + starting_bid + "," + closing_datetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public Default_item getItem() {
+        return item;
+    }
+
+    public void setItem(Default_item item) {
+        this.item = item;
     }
 
     public void set_bid_history(Bid_History old_bids){
         bids = old_bids;
     }
 
-    public String getItem_title() {
-        return item_title;
+    public String getLot_name() {
+        return lot_name;
     }
 
     public int get_auction_id() {
@@ -81,7 +106,7 @@ public class Lot {
 
     public void display(){
         System.out.println();
-        System.out.println(item_title);
+        System.out.println(lot_name);
         System.out.println("Lot ID: " + id);
         System.out.println("Starting Bid: " + starting_bid);
 

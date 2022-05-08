@@ -1,30 +1,41 @@
 package daos;
 
+import csv.services.CustomCSVReader;
 import model.Default_item;
-import model.Item;
-import model.Ring;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDAO {
-    private ArrayList<Item> items = new ArrayList<>();
+    private List<Default_item> items = new ArrayList<>();
 
     public ItemDAO(){
-        items.add(new Ring(1, 2022, "XD2245", "Diamond", 0.5, "Unisex", ""));
-        items.add(new Default_item(2, "super cool stuff"));
-        items.add(new Default_item(3, "very nice item"));
-        items.add(new Default_item(4, "bad item"));
+        try {
+            items.addAll(CustomCSVReader.getInstance().readAll(Default_item.class, "src/main/resources/csv/default_items.csv"));
+        } catch(Exception e){
+            items = null;
+            e.printStackTrace();
+        }
     }
 
-    public void save(){
+    public void save(Default_item item){
+        items.add(item);
+    }
+
+    public void delete(Default_item item){
+        items.remove(item);
+    }
+
+    public void update(Default_item item, String[] params){
 
     }
-    public ArrayList<Item> getItems() {
+
+    public List<Default_item> getItems() {
         return items;
     }
 
-    public Item get_item_by_lot(int lot_id){
-        for (Item item: items) {
+    public Default_item get_item_by_lot(int lot_id){
+        for (Default_item item: items) {
             if(item.get_lot_id() == lot_id)
                 return item;
         }

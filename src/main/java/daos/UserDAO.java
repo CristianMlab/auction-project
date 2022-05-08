@@ -1,19 +1,35 @@
 package daos;
+import csv.services.CustomCSVReader;
 import model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
-    private ArrayList<User> Users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     public UserDAO() {
-        Users.add(new User(1, "Andrei", "andrei@iahu.com"));
-        Users.add(new User(2, "Gigel", "gigel@iahu.com"));
-        Users.add(new User(3, "Mihai", "mihai@iahu.com"));
-        Users.add(new User(4, "George", "george@iahu.com"));
+        try {
+            users = CustomCSVReader.getInstance().readAll(User.class, "src/main/resources/csv/users.csv");
+        } catch(Exception e){
+            users = null;
+            e.printStackTrace();
+        }
     }
 
-    public ArrayList<User> getUsers() {
-        return Users;
+    public void save(User user){
+        users.add(user);
+    }
+
+    public void delete(User user){
+        users.remove(user);
+    }
+
+    public void update(User user, String[] params){
+
+    }
+
+    public List<User> getUsers() {
+        return users;
     }
 }

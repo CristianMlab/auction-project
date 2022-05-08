@@ -1,19 +1,36 @@
 package daos;
 
+import csv.services.CustomCSVReader;
 import model.Bid;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BidDAO {
-    private ArrayList<Bid> bids = new ArrayList<>();
+    private List<Bid> bids = new ArrayList<>();
 
     public BidDAO() {
-        bids.add(new Bid(2300, LocalDateTime.of(2022, 5, 5, 5, 5, 5), 1, 1));
-        bids.add(new Bid(2800, LocalDateTime.of(2022, 5, 5, 5, 10, 10), 2, 1));
+        try {
+            bids = CustomCSVReader.getInstance().readAll(Bid.class, "src/main/resources/csv/bids.csv");
+        } catch(Exception e){
+            bids = null;
+            e.printStackTrace();
+        }
     }
 
-    public ArrayList<Bid> getBids() {
+    public void save(Bid bid){
+        bids.add(bid);
+    }
+
+    public void delete(Bid bid){
+        bids.remove(bid);
+    }
+
+    public void update(Bid bid, String[] params){
+
+    }
+
+    public List<Bid> getBids() {
         return bids;
     }
 }

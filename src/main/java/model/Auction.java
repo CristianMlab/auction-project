@@ -1,15 +1,32 @@
 package model;
 
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvDate;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Auction {
+    @CsvBindByName(column = "ID")
     private int id;
+
+    @CsvBindByName(column = "NAME")
     private String name;
-    private ArrayList<Lot> lots = new ArrayList<Lot>();
+
+    @CsvDate(value = "yyyy-MM-dd HH:mm:ss")
+    @CsvBindByName(column = "CLOSING_DATETIME")
     private LocalDateTime closing_datetime;
+
+    @CsvBindByName(column = "DETAILS")
     private String details;
+
+    public static String getHeader(){
+        return "ID,NAME,CLOSING_DATETIME,DETAILS";
+    }
+
+    private ArrayList<Lot> lots = new ArrayList<Lot>();
 
     public Auction(int id, String name, LocalDateTime closing_datetime, String details) {
         this.id = id;
@@ -18,8 +35,18 @@ public class Auction {
         this.details = details;
     }
 
+    public Auction(){}
+
+    public String toString(){
+        return id + "," + name + "," + closing_datetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "," + details;
+    }
+
     public int get_number_of_lots(){
         return lots.size();
+    }
+
+    public ArrayList<Lot> getLots() {
+        return lots;
     }
 
     public int get_id() {
@@ -60,7 +87,7 @@ public class Auction {
         System.out.println();
         System.out.println( get_number_of_lots() + " Lots:");
         for (int i = 0; i < lots.size() ; i++) {
-            System.out.println((i+1) + ". " + lots.get(i).getItem_title());
+            System.out.println((i+1) + ". " + lots.get(i).getLot_name());
         }
     }
 }

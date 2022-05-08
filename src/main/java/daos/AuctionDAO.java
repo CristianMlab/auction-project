@@ -1,36 +1,49 @@
 package daos;
 
+import csv.services.CustomCSVReader;
 import model.Auction;
 import model.Lot;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AuctionDAO {
-    private ArrayList<Auction> auctions = new ArrayList<>();
+    private List<Auction> auctions = new ArrayList<>();
 
     public AuctionDAO() {
-        auctions.add(new Auction(1, "Bijoux exclusifs en Diamants", LocalDateTime.of(2022, 6, 20, 4, 0, 0), "Online Auction"));
-        auctions.add(new Auction(2, "random auction", LocalDateTime.of(2022, 6, 15, 7, 0, 0), "Online Auction"));
+        try {
+            auctions = CustomCSVReader.getInstance().readAll(Auction.class, "src/main/resources/csv/auctions.csv");
+        } catch(Exception e){
+            auctions = null;
+            e.printStackTrace();
+        }
 
         //adding all lots to their auctions
         LotDAO lotDAO = new LotDAO();
-        ArrayList<Lot> lots = lotDAO.getLots();
+        List<Lot> lots = lotDAO.getLots();
         for (Lot lot: lots) {
             if(get_auction_by_id(lot.get_auction_id()) != null)
                 get_auction_by_id(lot.get_auction_id()).add_lot(lot);
         }
     }
 
-    public void add(Auction auc){
+    public void save(Auction auc){
         auctions.add(auc);
     }
 
-    public void remove(int auction_id){
+    public void delete(Auction auc){
+        auctions.remove(auc);
+    }
+
+    public void delete(int auction_id){
         auctions.removeIf(auc -> auc.get_id() == auction_id);
     }
 
-    public ArrayList<Auction> getAuctions() {
+    public void update(Auction auc, String[] params){
+
+    }
+
+    public List<Auction> getAuctions() {
         return auctions;
     }
 

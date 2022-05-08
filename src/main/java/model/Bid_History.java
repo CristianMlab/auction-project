@@ -49,4 +49,8 @@ public class Bid_History {
     public void add_bid(Bid x){
         bids.add(x);
     }
+
+    public ArrayList<Bid> getBids() {
+        return bids;
+    }
 }
