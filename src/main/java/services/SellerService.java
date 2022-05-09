@@ -1,5 +1,6 @@
 package services;
 
+import csv.services.AuditService;
 import csv.services.CustomCSVWriter;
 import daos.*;
 import model.*;
@@ -24,17 +25,14 @@ public class SellerService {
     public void createDefaultLot(int lot_id, int auction_id, String lot_name, String description, int starting_bid, LocalDateTime closing_datetime){
         Default_item item = new Default_item(lot_id, description);
         itemDAO.save(item);
-        try {
-            CustomCSVWriter.getInstance().appendObject(Default_item.class, new Default_item(lot_id, description), "src/main/resources/csv/default_items.csv");
-        } catch(Exception e){
-            e.printStackTrace();
-        }
         Lot new_lot = new Lot(lot_name, lot_id, starting_bid, auction_id, closing_datetime);
         new_lot.set_bid_history(new Bid_History(lot_id));
         new_lot.setItem(item);
         lotDAO.save(new_lot);
         try {
+            CustomCSVWriter.getInstance().appendObject(Default_item.class, new Default_item(lot_id, description), "src/main/resources/csv/default_items.csv");
             CustomCSVWriter.getInstance().appendObject(Lot.class, new_lot, "src/main/resources/csv/lots.csv");
+            AuditService.getInstance().log("create lot", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -46,6 +44,7 @@ public class SellerService {
         auctionDAO.save(new_auc);
         try {
             CustomCSVWriter.getInstance().appendObject(Auction.class, new_auc, "src/main/resources/csv/auctions.csv");
+            AuditService.getInstance().log("create auction", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
             e.printStackTrace();
         }

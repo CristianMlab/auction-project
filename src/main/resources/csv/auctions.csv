@@ -1,3 +1,4 @@
 "ID","NAME","CLOSING_DATETIME","DETAILS"
 "1","auction 1","2022-06-02 05:00:00","detalii"
 "2","auction 2","2022-06-01 05:00:05","details"
+"3","test auction","2022-06-02 05:00:00","detalii"

@@ -52,5 +52,6 @@ public class Main {
 
         bidderService.displayAuction(1);
         bidderService.displayAuction(2);
+        bidderService.displayLot(2);
     }
 }

@@ -1,5 +1,6 @@
 package services;
 
+import csv.services.AuditService;
 import csv.services.CustomCSVWriter;
 import daos.*;
 import model.*;
@@ -24,10 +25,20 @@ public class BidderService {
 
     public void displayAuction(int auction_id){
         auctionDAO.get_auction_by_id(auction_id).display();
+        try {
+            AuditService.getInstance().log("display auction", "src/main/resources/csv/audit.csv");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void displayLot(int lot_id){
         lotDAO.get_lot_by_id(lot_id).display();
+        try {
+            AuditService.getInstance().log("display lot", "src/main/resources/csv/audit.csv");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void displayBidsByUser(int user_id){
@@ -40,6 +51,11 @@ public class BidderService {
                 history.find_user_bid(user_id).display();
             }
         }
+        try {
+            AuditService.getInstance().log("display bids", "src/main/resources/csv/audit.csv");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void place_bid(int lot_id, int value, int user_id){
@@ -48,6 +64,7 @@ public class BidderService {
         bidDAO.save(bid);
         try {
             CustomCSVWriter.getInstance().appendObject(Bid.class, bid, "src/main/resources/csv/bids.csv");
+            AuditService.getInstance().log("place bid", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -60,6 +77,7 @@ public class BidderService {
             bidDAO.delete(bid);
             try {
                 CustomCSVWriter.getInstance().writeAll(Bid.class, bidDAO.getBids(), "src/main/resources/csv/bids.csv", Bid.getHeader());
+                AuditService.getInstance().log("retract bid", "src/main/resources/csv/audit.csv");
             } catch(Exception e){
                 e.printStackTrace();
             }

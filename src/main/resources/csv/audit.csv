@@ -1,0 +1,14 @@
+ACTION,TIMESTAMP
+delete lot,2022-05-09 21:20:30
+delete auction,2022-05-09 21:20:30
+display auction,2022-05-09 21:20:30
+display auction,2022-05-09 21:20:30
+display lot,2022-05-09 21:20:30
+create auction,2022-05-09 21:21:34
+display auction,2022-05-09 21:21:34
+create lot,2022-05-09 21:21:34
+display auction,2022-05-09 21:21:34
+display lot,2022-05-09 21:21:34
+display auction,2022-05-09 21:21:34
+display auction,2022-05-09 21:21:34
+display lot,2022-05-09 21:21:34
