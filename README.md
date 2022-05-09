@@ -2,7 +2,6 @@
 
 - Bid
 - Bid_History
-- Ring
 - Default_item
 - Lot
 - User
