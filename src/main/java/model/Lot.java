@@ -12,17 +12,17 @@ public class Lot {
     private int id;
 
     @CsvBindByName(column = "AUCTION_ID")
-    private int auction_id;
+    private int auctionId;
 
     @CsvBindByName(column = "LOT_NAME")
-    private String lot_name;
+    private String lotName;
 
     @CsvBindByName(column = "STARTING_BID")
-    private double starting_bid;
+    private double startingBid;
 
     @CsvDate(value = "yyyy-MM-dd HH:mm:ss")
     @CsvBindByName(column = "CLOSING_DATETIME")
-    private LocalDateTime closing_datetime;
+    private LocalDateTime closingDatetime;
 
     private Bid_History bids;
     private Default_item item;
@@ -31,18 +31,18 @@ public class Lot {
         return "ID,AUCTION_ID,LOT_NAME,STARTING_BID,CLOSING_DATETIME";
     }
 
-    public Lot(String lot_name,int id, double starting_bid, int auction_id, LocalDateTime closing_datetime) {
-        this.lot_name = lot_name;
+    public Lot(String lotName, int id, double startingBid, int auctionId, LocalDateTime closingDatetime) {
+        this.lotName = lotName;
         this.id = id;
-        this.starting_bid = starting_bid;
-        this.auction_id = auction_id;
-        this.closing_datetime = closing_datetime;
+        this.startingBid = startingBid;
+        this.auctionId = auctionId;
+        this.closingDatetime = closingDatetime;
     }
 
     public Lot(){}
 
     public String toString(){
-        return id + "," + auction_id + "," + lot_name + "," + starting_bid + "," + closing_datetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return id + "," + auctionId + "," + lotName + "," + startingBid + "," + closingDatetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     public Default_item getItem() {
@@ -57,28 +57,28 @@ public class Lot {
         bids = old_bids;
     }
 
-    public String getLot_name() {
-        return lot_name;
+    public String getLotName() {
+        return lotName;
     }
 
-    public int get_auction_id() {
-        return auction_id;
+    public int getAuctionId() {
+        return auctionId;
     }
 
-    public int get_lot_id(){
+    public int getLotId(){
         return id;
     }
 
-    public double last_bid_value(){
-        return bids.get_last_bid().getValue();
+    public double lastBidValue(){
+        return bids.getLastBid().getValue();
     }
 
-    public LocalDateTime last_bid_time(){
-        return bids.get_last_bid().getTime();
+    public LocalDateTime lastBidTime(){
+        return bids.getLastBid().getTime();
     }
 
-    public int last_bid_user(){
-        return bids.get_last_bid().getUser_id();
+    public int lastBidUser(){
+        return bids.getLastBid().getUserId();
     }
 
     public Bid_History getBids() {
@@ -86,38 +86,38 @@ public class Lot {
     }
 
     public void bid(int value, int user_id){
-        double last_bid;
-        LocalDateTime current_date = LocalDateTime.now();
-        if(current_date.isAfter(closing_datetime)){
+        double lastBid;
+        LocalDateTime currentDate = LocalDateTime.now();
+        if(currentDate.isAfter(closingDatetime)){
             System.out.println("The lot is closed, a bid cannot be placed");
         } else {
-            Bid new_bid = new Bid(value, current_date, user_id, id);
-            if (bids.get_last_bid() == null)
-                last_bid = starting_bid/1.1;
+            Bid new_bid = new Bid(value, currentDate, user_id, id);
+            if (bids.getLastBid() == null)
+                lastBid = startingBid /1.1;
             else
-                last_bid = last_bid_value();
-            if (value < 1.1 * last_bid) {
-                System.out.println("Can't place bid, the minimum bid is " + 1.1 * last_bid_value());
+                lastBid = lastBidValue();
+            if (value < 1.1 * lastBid) {
+                System.out.println("Can't place bid, the minimum bid is " + 1.1 * lastBidValue());
             } else {
-                bids.add_bid(new_bid);
+                bids.addBid(new_bid);
             }
         }
     }
 
     public void display(){
         System.out.println();
-        System.out.println(lot_name);
+        System.out.println(lotName);
         System.out.println("Lot ID: " + id);
-        System.out.println("Starting Bid: " + starting_bid);
+        System.out.println("Starting Bid: " + startingBid);
 
-        if(bids.get_number_of_bids() != 0)
-            System.out.println("Current Bid: " + last_bid_value());
+        if(bids.getNumberOfBids() != 0)
+            System.out.println("Current Bid: " + lastBidValue());
 
-        System.out.println("Number of bids: " + bids.get_number_of_bids());
+        System.out.println("Number of bids: " + bids.getNumberOfBids());
 
-        Duration diff = Duration.between(LocalDateTime.now(), closing_datetime);
+        Duration diff = Duration.between(LocalDateTime.now(), closingDatetime);
         String hms = String.format("%d days, %dh:%02dm:%02ds", diff.toHours()/24, diff.toHours()%24, diff.toMinutesPart(), diff.toSecondsPart());
-        if(LocalDateTime.now().compareTo(closing_datetime) <= 0)
+        if(LocalDateTime.now().compareTo(closingDatetime) <= 0)
             System.out.println("Closes in: " + hms);
         else
             System.out.println("Bidding is closed");

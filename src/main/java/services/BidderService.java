@@ -46,9 +46,9 @@ public class BidderService {
         ArrayList<Bid> results = new ArrayList<>();
         for (Lot lot: lots) {
             Bid_History history = lot.getBids();
-            if(history.find_user_bid(user_id) != null){
-                results.add(history.find_user_bid(user_id));
-                history.find_user_bid(user_id).display();
+            if(history.findUserBid(user_id) != null){
+                results.add(history.findUserBid(user_id));
+                history.findUserBid(user_id).display();
             }
         }
         try {
@@ -71,9 +71,9 @@ public class BidderService {
     }
 
     public void retract_bid(int lot_id, int user_id){
-        Bid bid = lotDAO.get_lot_by_id(lot_id).getBids().get_last_bid();
-        if(lotDAO.get_lot_by_id(lot_id).last_bid_user() == user_id){
-            lotDAO.get_lot_by_id(lot_id).getBids().remove_last_bid();
+        Bid bid = lotDAO.get_lot_by_id(lot_id).getBids().getLastBid();
+        if(lotDAO.get_lot_by_id(lot_id).lastBidUser() == user_id){
+            lotDAO.get_lot_by_id(lot_id).getBids().removeLastBid();
             bidDAO.delete(bid);
             try {
                 CustomCSVWriter.getInstance().writeAll(Bid.class, bidDAO.getBids(), "src/main/resources/csv/bids.csv", Bid.getHeader());
@@ -87,8 +87,8 @@ public class BidderService {
     }
 
     public void change_bid(int lot_id, int new_value, int user_id){
-        Bid bid = lotDAO.get_lot_by_id(lot_id).getBids().get_last_bid();
-        if(bid.getUser_id() == user_id){
+        Bid bid = lotDAO.get_lot_by_id(lot_id).getBids().getLastBid();
+        if(bid.getUserId() == user_id){
             retract_bid(lot_id, user_id);
             place_bid(lot_id, new_value, user_id);
         } else {

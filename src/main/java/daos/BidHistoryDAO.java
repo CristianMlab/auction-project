@@ -4,7 +4,6 @@ package daos;
 import model.Bid;
 import model.Bid_History;
 import model.Default_item;
-import model.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class BidHistoryDAO {
         //creating an empty bid history for every item
         ItemDAO x = new ItemDAO();
         List<Default_item> items = x.getItems();
-        for(Item item : items){
+        for(Default_item item : items){
                 histories.add(new Bid_History(item.get_lot_id()));
         }
 
@@ -25,7 +24,7 @@ public class BidHistoryDAO {
         BidDAO bidDAO = new BidDAO();
         List<Bid> bids = bidDAO.getBids();
         for(Bid bid : bids){
-            get_history_by_lot(bid.getLot_id()).add_bid(bid);
+            get_history_by_lot(bid.getLotId()).addBid(bid);
         }
     }
 
@@ -35,7 +34,7 @@ public class BidHistoryDAO {
 
     public Bid_History get_history_by_lot(int lot_id){
         for (Bid_History history: histories) {
-            if(history.get_lot_id() == lot_id)
+            if(history.getLotId() == lot_id)
                 return history;
         }
         return null;

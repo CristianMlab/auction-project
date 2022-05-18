@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 
 public class Bid_History {
-    private int lot_id;
+    private int lotId;
     private ArrayList<Bid> bids = new ArrayList<Bid>();
 
     public void display(){
@@ -12,41 +12,41 @@ public class Bid_History {
         }
     }
 
-    public Bid_History(int lot_id) {
-        this.lot_id = lot_id;
+    public Bid_History(int lotId) {
+        this.lotId = lotId;
     }
 
-    public int get_lot_id() {
-        return lot_id;
+    public int getLotId() {
+        return lotId;
     }
 
-    public Bid get_last_bid(){
+    public Bid getLastBid(){
         if(bids.isEmpty())
             return null;
 
         return bids.get(bids.size()-1);
     }
 
-    public void remove_last_bid(){
+    public void removeLastBid(){
         if(!bids.isEmpty()){
             bids.remove(bids.size()-1);
         }
     }
 
-    public Bid find_user_bid(int user_id){
+    public Bid findUserBid(int user_id){
         for (Bid bid: bids) {
-            if(bid.getUser_id() == user_id){
+            if(bid.getUserId() == user_id){
                 return bid;
             }
         }
         return null;
     }
 
-    public int get_number_of_bids(){
+    public int getNumberOfBids(){
         return bids.size();
     }
 
-    public void add_bid(Bid x){
+    public void addBid(Bid x){
         bids.add(x);
     }
 

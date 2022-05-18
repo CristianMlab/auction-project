@@ -1,10 +1,8 @@
 package daos;
 
 import csv.services.CustomCSVReader;
-import csv.services.CustomCSVWriter;
 import model.Bid_History;
 import model.Default_item;
-import model.Item;
 import model.Lot;
 
 import java.util.ArrayList;
@@ -76,7 +74,7 @@ public class LotDAO {
 
     public Lot get_lot_by_id(int id){
         for (Lot lot: lots) {
-            if(lot.get_lot_id() == id)
+            if(lot.getLotId() == id)
                 return lot;
         }
         return null;

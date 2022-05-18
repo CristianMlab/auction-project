@@ -15,30 +15,30 @@ public class Bid {
     private LocalDateTime time;
 
     @CsvBindByName(column = "USER_ID")
-    private int user_id;
+    private int userId;
 
     @CsvBindByName(column = "LOT_ID")
-    private int lot_id;
+    private int lotId;
 
     public static String getHeader(){
         return "VALUE,TIME,USER_ID,LOT_ID";
     }
 
-    public Bid(int value, LocalDateTime time, int user_id, int lot_id) {
+    public Bid(int value, LocalDateTime time, int userId, int lotId) {
         this.value = value;
         this.time = time;
-        this.user_id = user_id;
-        this.lot_id = lot_id;
+        this.userId = userId;
+        this.lotId = lotId;
     }
 
     public Bid() {}
 
     public void display(){
-        System.out.println("Bid for " + value + " on lot ID " + lot_id +" placed by user ID " + user_id + " at time: " + time);
+        System.out.println("Bid for " + value + " on lot ID " + lotId +" placed by user ID " + userId + " at time: " + time);
     }
 
     public String toString(){
-        return value + "," + time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "," + user_id + "," + lot_id;
+        return value + "," + time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "," + userId + "," + lotId;
     }
 
     public double getValue() {
@@ -57,15 +57,15 @@ public class Bid {
         this.time = time;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getLot_id() {
-        return lot_id;
+    public int getLotId() {
+        return lotId;
     }
 }
