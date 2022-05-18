@@ -53,10 +53,10 @@ public class LotDAO {
         List<Default_item> items = itemDAO.getItems();
         for(Default_item item : items){
             int id = item.get_lot_id();
-            Bid_History history = bidHistoryDAO.get_history_by_lot(id);
+            Bid_History history = bidHistoryDAO.getHistoryByLot(id);
 
-            get_lot_by_id(id).set_bid_history(history);
-            get_lot_by_id(id).setItem(item);
+            getLotById(id).setBidHistory(history);
+            getLotById(id).setItem(item);
         }
     }
 
@@ -72,7 +72,7 @@ public class LotDAO {
 
     }
 
-    public Lot get_lot_by_id(int id){
+    public Lot getLotById(int id){
         for (Lot lot: lots) {
             if(lot.getLotId() == id)
                 return lot;

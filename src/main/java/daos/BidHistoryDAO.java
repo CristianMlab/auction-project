@@ -24,7 +24,7 @@ public class BidHistoryDAO {
         BidDAO bidDAO = new BidDAO();
         List<Bid> bids = bidDAO.getBids();
         for(Bid bid : bids){
-            get_history_by_lot(bid.getLotId()).addBid(bid);
+            getHistoryByLot(bid.getLotId()).addBid(bid);
         }
     }
 
@@ -32,7 +32,7 @@ public class BidHistoryDAO {
         return histories;
     }
 
-    public Bid_History get_history_by_lot(int lot_id){
+    public Bid_History getHistoryByLot(int lot_id){
         for (Bid_History history: histories) {
             if(history.getLotId() == lot_id)
                 return history;

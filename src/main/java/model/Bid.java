@@ -24,7 +24,7 @@ public class Bid {
         return "VALUE,TIME,USER_ID,LOT_ID";
     }
 
-    public Bid(int value, LocalDateTime time, int userId, int lotId) {
+    public Bid(double value, LocalDateTime time, int userId, int lotId) {
         this.value = value;
         this.time = time;
         this.userId = userId;

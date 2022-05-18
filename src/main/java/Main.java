@@ -6,7 +6,10 @@ import services.BidderService;
 import services.SellerService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -21,37 +24,77 @@ public class Main {
         SellerService sellerService = new SellerService(lotDAO, auctionDAO, userDAO, bidDAO, itemDAO);
         AdminService adminService = new AdminService(lotDAO, auctionDAO, userDAO, bidDAO, itemDAO);
 
-        /*
-        bidderService.displayAuction(1);
-        bidderService.displayLot(1);
-        bidderService.retract_bid(1, 2);
-        bidderService.displayLot(1);
+        Scanner in = new Scanner(System.in);
+        String line;
 
-        bidderService.displayBidsByUser(1);
+        while ((line = in.nextLine()) != null) {
+            List<String> cmd = Arrays.asList(line.split(" "));
 
-        System.out.println("ALTCEVA");
+            System.out.println(cmd.get(0));
+            switch (cmd.get(0)) {
+                case "display_auction" -> {
+                    int id = Integer.parseInt(cmd.get(1));
+                    bidderService.displayAuction(id);
+                }
 
-        sellerService.createAuction(3, "test auction", LocalDateTime.of(2022, 6, 2, 5, 0, 0), "detalii");
-        bidderService.displayAuction(3);
-        sellerService.createDefaultLot(5, 3, "test_lot", "description", 1000, LocalDateTime.of(2022, 6, 1, 5, 0, 0));
-        bidderService.displayAuction(3);
-        bidderService.displayLot(5);
-        */
+                case "display_lot" -> {
+                    int id = Integer.parseInt(cmd.get(1));
+                    bidderService.displayLot(id);
+                }
 
+                case "place_bid" -> {
+                    int lotId = Integer.parseInt(cmd.get(1));
+                    double value = Double.parseDouble(cmd.get(2));
+                    int userId = Integer.parseInt(cmd.get(3));
+                    bidderService.placeBid(lotId, value, userId);
+                }
 
-        /*sellerService.createAuction(3, "test auction", LocalDateTime.of(2022, 6, 2, 5, 0, 0), "detalii");
-        bidderService.displayAuction(3);
-        sellerService.createDefaultLot(5, 3, "test_lot", "description", 1000, LocalDateTime.of(2022, 6, 1, 5, 0, 0));
-        bidderService.displayAuction(3);
-        bidderService.displayLot(5);*/
+                case "retract_bid" -> {
+                    int lotId = Integer.parseInt(cmd.get(1));
+                    int userId = Integer.parseInt(cmd.get(2));
+                    bidderService.retractBid(lotId, userId);
+                }
 
+                case "change_bid" -> {
+                    int lotId = Integer.parseInt(cmd.get(1));
+                    double newValue = Double.parseDouble(cmd.get(2));
+                    int userId = Integer.parseInt(cmd.get(3));
+                    bidderService.changeBid(lotId, newValue, userId);
+                }
 
-        //adminService.deleteAuction(auctionDAO.get_auction_by_id(3));
-        //adminService.deleteLot(lotDAO.get_lot_by_id(5));
-        //adminService.deleteAuction(auctionDAO.get_auction_by_id(3));
+                case "display_bids_by_user" -> {
+                    int userId = Integer.parseInt(cmd.get(1));
+                    bidderService.displayBidsByUser(userId);
+                }
 
-        bidderService.displayAuction(1);
-        bidderService.displayAuction(2);
-        bidderService.displayLot(2);
+                case "delete_lot" -> {
+                    int lotId = Integer.parseInt(cmd.get(1));
+                    adminService.deleteDefaultLot(lotDAO.getLotById(lotId));
+                }
+
+                case "delete_auction" -> {
+                    int auctionId = Integer.parseInt(cmd.get(1));
+                    adminService.deleteAuction(auctionDAO.getAuctionById(auctionId));
+                }
+
+                case "create_lot" -> {
+                    int lotId = Integer.parseInt(cmd.get(1));
+                    int auctionId = Integer.parseInt(cmd.get(2));
+                    String lotName = cmd.get(3);
+                    String description = cmd.get(4);
+                    int startingBid = Integer.parseInt(cmd.get(5));
+                    LocalDateTime closingDateTime = LocalDateTime.parse(cmd.get(6), DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm:ss"));
+                    sellerService.createDefaultLot(lotId, auctionId, lotName, description, startingBid, closingDateTime);
+                }
+
+                case "create_auction" -> {
+                    int auctionId = Integer.parseInt(cmd.get(1));
+                    String name = cmd.get(2);
+                    LocalDateTime closingDateTime = LocalDateTime.parse(cmd.get(3), DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm:ss"));
+                    String details = cmd.get(4);
+                    sellerService.createAuction(auctionId, name, closingDateTime, details);
+                }
+            }
+        }
     }
 }

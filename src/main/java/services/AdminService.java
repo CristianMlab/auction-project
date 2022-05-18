@@ -40,7 +40,7 @@ public class AdminService {
             deleteBid(bid);
         }
 
-        Default_item item = itemDAO.get_item_by_lot(lot.getLotId());
+        Default_item item = itemDAO.getItemByLot(lot.getLotId());
         itemDAO.delete(item);
         lotDAO.delete(lot);
 
@@ -56,7 +56,7 @@ public class AdminService {
     public void deleteAuction(Auction auc){
         List<Lot> lots = auc.getLots();
         for (Lot lot: lots) {
-            deleteDefaultLot(lotDAO.get_lot_by_id(lot.getLotId()));
+            deleteDefaultLot(lotDAO.getLotById(lot.getLotId()));
         }
 
         auctionDAO.delete(auc);

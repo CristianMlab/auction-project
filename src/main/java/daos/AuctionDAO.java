@@ -22,8 +22,8 @@ public class AuctionDAO {
         LotDAO lotDAO = new LotDAO();
         List<Lot> lots = lotDAO.getLots();
         for (Lot lot: lots) {
-            if(get_auction_by_id(lot.getAuctionId()) != null)
-                get_auction_by_id(lot.getAuctionId()).add_lot(lot);
+            if(getAuctionById(lot.getAuctionId()) != null)
+                getAuctionById(lot.getAuctionId()).add_lot(lot);
         }
     }
 
@@ -47,7 +47,7 @@ public class AuctionDAO {
         return auctions;
     }
 
-    public Auction get_auction_by_id(int id){
+    public Auction getAuctionById(int id){
         for (Auction auc: auctions) {
             if(auc.getId() == id)
                 return auc;

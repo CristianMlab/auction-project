@@ -34,7 +34,7 @@ public class ItemDAO {
         return items;
     }
 
-    public Default_item get_item_by_lot(int lot_id){
+    public Default_item getItemByLot(int lot_id){
         for (Default_item item: items) {
             if(item.get_lot_id() == lot_id)
                 return item;

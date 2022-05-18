@@ -22,25 +22,25 @@ public class SellerService {
         this.itemDAO = itemDAO;
     }
 
-    public void createDefaultLot(int lot_id, int auction_id, String lot_name, String description, int starting_bid, LocalDateTime closing_datetime){
-        Default_item item = new Default_item(lot_id, description);
+    public void createDefaultLot(int lotId, int auctionId, String lotName, String description, int startingBid, LocalDateTime closingDatetime){
+        Default_item item = new Default_item(lotId, description);
         itemDAO.save(item);
-        Lot new_lot = new Lot(lot_name, lot_id, starting_bid, auction_id, closing_datetime);
-        new_lot.set_bid_history(new Bid_History(lot_id));
+        Lot new_lot = new Lot(lotName, lotId, startingBid, auctionId, closingDatetime);
+        new_lot.setBidHistory(new Bid_History(lotId));
         new_lot.setItem(item);
         lotDAO.save(new_lot);
         try {
-            CustomCSVWriter.getInstance().appendObject(Default_item.class, new Default_item(lot_id, description), "src/main/resources/csv/default_items.csv");
+            CustomCSVWriter.getInstance().appendObject(Default_item.class, new Default_item(lotId, description), "src/main/resources/csv/default_items.csv");
             CustomCSVWriter.getInstance().appendObject(Lot.class, new_lot, "src/main/resources/csv/lots.csv");
             AuditService.getInstance().log("create lot", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
             e.printStackTrace();
         }
-        auctionDAO.get_auction_by_id(auction_id).add_lot(new_lot);
+        auctionDAO.getAuctionById(auctionId).add_lot(new_lot);
     }
 
-    public void createAuction(int auction_id, String name, LocalDateTime closing_datetime, String details){
-        Auction new_auc = new Auction(auction_id, name, closing_datetime, details);
+    public void createAuction(int auctionId, String name, LocalDateTime closingDatetime, String details){
+        Auction new_auc = new Auction(auctionId, name, closingDatetime, details);
         auctionDAO.save(new_auc);
         try {
             CustomCSVWriter.getInstance().appendObject(Auction.class, new_auc, "src/main/resources/csv/auctions.csv");

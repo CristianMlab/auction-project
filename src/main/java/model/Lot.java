@@ -53,7 +53,7 @@ public class Lot {
         this.item = item;
     }
 
-    public void set_bid_history(Bid_History old_bids){
+    public void setBidHistory(Bid_History old_bids){
         bids = old_bids;
     }
 
@@ -85,7 +85,7 @@ public class Lot {
         return bids;
     }
 
-    public void bid(int value, int user_id){
+    public void bid(double value, int user_id){
         double lastBid;
         LocalDateTime currentDate = LocalDateTime.now();
         if(currentDate.isAfter(closingDatetime)){

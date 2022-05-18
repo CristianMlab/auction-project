@@ -23,8 +23,8 @@ public class BidderService {
         this.bidDAO = bidDAO;
     }
 
-    public void displayAuction(int auction_id){
-        auctionDAO.get_auction_by_id(auction_id).display();
+    public void displayAuction(int auctionId){
+        auctionDAO.getAuctionById(auctionId).display();
         try {
             AuditService.getInstance().log("display auction", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
@@ -32,8 +32,8 @@ public class BidderService {
         }
     }
 
-    public void displayLot(int lot_id){
-        lotDAO.get_lot_by_id(lot_id).display();
+    public void displayLot(int lotId){
+        lotDAO.getLotById(lotId).display();
         try {
             AuditService.getInstance().log("display lot", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
@@ -41,14 +41,14 @@ public class BidderService {
         }
     }
 
-    public void displayBidsByUser(int user_id){
+    public void displayBidsByUser(int userId){
         List<Lot> lots = lotDAO.getLots();
         ArrayList<Bid> results = new ArrayList<>();
         for (Lot lot: lots) {
             Bid_History history = lot.getBids();
-            if(history.findUserBid(user_id) != null){
-                results.add(history.findUserBid(user_id));
-                history.findUserBid(user_id).display();
+            if(history.findUserBid(userId) != null){
+                results.add(history.findUserBid(userId));
+                history.findUserBid(userId).display();
             }
         }
         try {
@@ -58,9 +58,9 @@ public class BidderService {
         }
     }
 
-    public void place_bid(int lot_id, int value, int user_id){
-        Bid bid = new Bid(value, LocalDateTime.now(), user_id, lot_id);
-        lotDAO.get_lot_by_id(lot_id).bid(value, user_id);
+    public void placeBid(int lotId, double value, int userId){
+        Bid bid = new Bid(value, LocalDateTime.now(), userId, lotId);
+        lotDAO.getLotById(lotId).bid(value, userId);
         bidDAO.save(bid);
         try {
             CustomCSVWriter.getInstance().appendObject(Bid.class, bid, "src/main/resources/csv/bids.csv");
@@ -70,10 +70,10 @@ public class BidderService {
         }
     }
 
-    public void retract_bid(int lot_id, int user_id){
-        Bid bid = lotDAO.get_lot_by_id(lot_id).getBids().getLastBid();
-        if(lotDAO.get_lot_by_id(lot_id).lastBidUser() == user_id){
-            lotDAO.get_lot_by_id(lot_id).getBids().removeLastBid();
+    public void retractBid(int lotId, int userId){
+        Bid bid = lotDAO.getLotById(lotId).getBids().getLastBid();
+        if(lotDAO.getLotById(lotId).lastBidUser() == userId){
+            lotDAO.getLotById(lotId).getBids().removeLastBid();
             bidDAO.delete(bid);
             try {
                 CustomCSVWriter.getInstance().writeAll(Bid.class, bidDAO.getBids(), "src/main/resources/csv/bids.csv", Bid.getHeader());
@@ -86,11 +86,11 @@ public class BidderService {
         }
     }
 
-    public void change_bid(int lot_id, int new_value, int user_id){
-        Bid bid = lotDAO.get_lot_by_id(lot_id).getBids().getLastBid();
-        if(bid.getUserId() == user_id){
-            retract_bid(lot_id, user_id);
-            place_bid(lot_id, new_value, user_id);
+    public void changeBid(int lotId, double newValue, int userId){
+        Bid bid = lotDAO.getLotById(lotId).getBids().getLastBid();
+        if(bid.getUserId() == userId){
+            retractBid(lotId, userId);
+            placeBid(lotId, newValue, userId);
         } else {
             System.out.println("Bid can't be changed since you did not place the last bid");
         }
