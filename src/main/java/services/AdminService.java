@@ -40,12 +40,12 @@ public class AdminService {
             deleteBid(bid);
         }
 
-        Default_item item = itemDAO.getItemByLot(lot.getLotId());
+        DefaultItem item = itemDAO.getItemByLot(lot.getLotId());
         itemDAO.delete(item);
         lotDAO.delete(lot);
 
         try {
-            CustomCSVWriter.getInstance().writeAll(Default_item.class, itemDAO.getItems(), "src/main/resources/csv/default_items.csv", Default_item.getHeader());
+            CustomCSVWriter.getInstance().writeAll(DefaultItem.class, itemDAO.getItems(), "src/main/resources/csv/default_items.csv", DefaultItem.getHeader());
             CustomCSVWriter.getInstance().writeAll(Lot.class, lotDAO.getLots(), "src/main/resources/csv/lots.csv", Lot.getHeader());
             AuditService.getInstance().log("delete lot", "src/main/resources/csv/audit.csv");
         } catch(Exception e){

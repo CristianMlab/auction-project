@@ -24,8 +24,8 @@ public class Lot {
     @CsvBindByName(column = "CLOSING_DATETIME")
     private LocalDateTime closingDatetime;
 
-    private Bid_History bids;
-    private Default_item item;
+    private BidHistory bids;
+    private DefaultItem item;
 
     public static String getHeader(){
         return "ID,AUCTION_ID,LOT_NAME,STARTING_BID,CLOSING_DATETIME";
@@ -45,15 +45,15 @@ public class Lot {
         return id + "," + auctionId + "," + lotName + "," + startingBid + "," + closingDatetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    public Default_item getItem() {
+    public DefaultItem getItem() {
         return item;
     }
 
-    public void setItem(Default_item item) {
+    public void setItem(DefaultItem item) {
         this.item = item;
     }
 
-    public void setBidHistory(Bid_History old_bids){
+    public void setBidHistory(BidHistory old_bids){
         bids = old_bids;
     }
 
@@ -81,7 +81,7 @@ public class Lot {
         return bids.getLastBid().getUserId();
     }
 
-    public Bid_History getBids() {
+    public BidHistory getBids() {
         return bids;
     }
 

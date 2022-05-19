@@ -17,12 +17,11 @@ public class CustomCSVReader {
 
     private CustomCSVReader(){}
 
-    public <T> List<T> readAll(Class<T> type, String fileName) throws FileNotFoundException {
+    public<T> List<T> readAll(Class<T> type, String fileName) throws FileNotFoundException {
         List<T> beans = new CsvToBeanBuilder(new FileReader(fileName))
                 .withType(type)
                 .build()
                 .parse();
         return beans;
     }
-
 }

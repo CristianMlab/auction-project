@@ -1,8 +1,8 @@
 package daos;
 
 import csv.services.CustomCSVReader;
-import model.Bid_History;
-import model.Default_item;
+import model.BidHistory;
+import model.DefaultItem;
 import model.Lot;
 
 import java.util.ArrayList;
@@ -50,10 +50,10 @@ public class LotDAO {
         //creating the lots using the items and bid histories
         ItemDAO itemDAO = new ItemDAO();
         BidHistoryDAO bidHistoryDAO = new BidHistoryDAO();
-        List<Default_item> items = itemDAO.getItems();
-        for(Default_item item : items){
+        List<DefaultItem> items = itemDAO.getItems();
+        for(DefaultItem item : items){
             int id = item.get_lot_id();
-            Bid_History history = bidHistoryDAO.getHistoryByLot(id);
+            BidHistory history = bidHistoryDAO.getHistoryByLot(id);
 
             getLotById(id).setBidHistory(history);
             getLotById(id).setItem(item);

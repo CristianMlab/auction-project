@@ -45,7 +45,7 @@ public class BidderService {
         List<Lot> lots = lotDAO.getLots();
         ArrayList<Bid> results = new ArrayList<>();
         for (Lot lot: lots) {
-            Bid_History history = lot.getBids();
+            BidHistory history = lot.getBids();
             if(history.findUserBid(userId) != null){
                 results.add(history.findUserBid(userId));
                 history.findUserBid(userId).display();

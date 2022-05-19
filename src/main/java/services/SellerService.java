@@ -23,14 +23,14 @@ public class SellerService {
     }
 
     public void createDefaultLot(int lotId, int auctionId, String lotName, String description, int startingBid, LocalDateTime closingDatetime){
-        Default_item item = new Default_item(lotId, description);
+        DefaultItem item = new DefaultItem(lotId, description);
         itemDAO.save(item);
         Lot new_lot = new Lot(lotName, lotId, startingBid, auctionId, closingDatetime);
-        new_lot.setBidHistory(new Bid_History(lotId));
+        new_lot.setBidHistory(new BidHistory(lotId));
         new_lot.setItem(item);
         lotDAO.save(new_lot);
         try {
-            CustomCSVWriter.getInstance().appendObject(Default_item.class, new Default_item(lotId, description), "src/main/resources/csv/default_items.csv");
+            CustomCSVWriter.getInstance().appendObject(DefaultItem.class, new DefaultItem(lotId, description), "src/main/resources/csv/default_items.csv");
             CustomCSVWriter.getInstance().appendObject(Lot.class, new_lot, "src/main/resources/csv/lots.csv");
             AuditService.getInstance().log("create lot", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
@@ -45,7 +45,7 @@ public class SellerService {
         try {
             CustomCSVWriter.getInstance().appendObject(Auction.class, new_auc, "src/main/resources/csv/auctions.csv");
             AuditService.getInstance().log("create auction", "src/main/resources/csv/audit.csv");
-        } catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }

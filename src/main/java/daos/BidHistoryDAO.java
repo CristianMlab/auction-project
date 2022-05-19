@@ -2,22 +2,22 @@ package daos;
 
 
 import model.Bid;
-import model.Bid_History;
-import model.Default_item;
+import model.BidHistory;
+import model.DefaultItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BidHistoryDAO {
 
-    private ArrayList<Bid_History> histories = new ArrayList<>();
+    private ArrayList<BidHistory> histories = new ArrayList<>();
 
     public BidHistoryDAO() {
         //creating an empty bid history for every item
         ItemDAO x = new ItemDAO();
-        List<Default_item> items = x.getItems();
-        for(Default_item item : items){
-                histories.add(new Bid_History(item.get_lot_id()));
+        List<DefaultItem> items = x.getItems();
+        for(DefaultItem item : items){
+                histories.add(new BidHistory(item.get_lot_id()));
         }
 
         //adding bids to the history
@@ -28,12 +28,12 @@ public class BidHistoryDAO {
         }
     }
 
-    public ArrayList<Bid_History> getHistories() {
+    public ArrayList<BidHistory> getHistories() {
         return histories;
     }
 
-    public Bid_History getHistoryByLot(int lot_id){
-        for (Bid_History history: histories) {
+    public BidHistory getHistoryByLot(int lot_id){
+        for (BidHistory history: histories) {
             if(history.getLotId() == lot_id)
                 return history;
         }
