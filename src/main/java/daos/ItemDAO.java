@@ -6,12 +6,12 @@ import model.DefaultItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemDAO {
+public class ItemDAO implements DAO<DefaultItem> {
     private List<DefaultItem> items = new ArrayList<>();
 
     public ItemDAO(){
         try {
-            items.addAll(CustomCSVReader.getInstance().readAll(DefaultItem.class, "src/main/resources/csv/default_items.csv"));
+            items.addAll(CustomCSVReader.getInstance().readAll(DefaultItem.class, "src/main/resources/csv/defaultItems.csv"));
         } catch(Exception e){
             items = null;
             e.printStackTrace();
@@ -30,13 +30,13 @@ public class ItemDAO {
 
     }
 
-    public List<DefaultItem> getItems() {
+    public List<DefaultItem> getAll() {
         return items;
     }
 
-    public DefaultItem getItemByLot(int lot_id){
+    public DefaultItem get(int lot_id){
         for (DefaultItem item: items) {
-            if(item.get_lot_id() == lot_id)
+            if(item.getLotId() == lot_id)
                 return item;
         }
         return null;

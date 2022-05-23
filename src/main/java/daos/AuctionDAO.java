@@ -7,7 +7,7 @@ import model.Lot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuctionDAO {
+public class AuctionDAO implements DAO<Auction> {
     private List<Auction> auctions = new ArrayList<>();
 
     public AuctionDAO() {
@@ -20,10 +20,10 @@ public class AuctionDAO {
 
         //adding all lots to their auctions
         LotDAO lotDAO = new LotDAO();
-        List<Lot> lots = lotDAO.getLots();
+        List<Lot> lots = lotDAO.getAll();
         for (Lot lot: lots) {
-            if(getAuctionById(lot.getAuctionId()) != null)
-                getAuctionById(lot.getAuctionId()).add_lot(lot);
+            if(get(lot.getAuctionId()) != null)
+                get(lot.getAuctionId()).addLot(lot);
         }
     }
 
@@ -35,19 +35,15 @@ public class AuctionDAO {
         auctions.remove(auc);
     }
 
-    public void delete(int auction_id){
-        auctions.removeIf(auc -> auc.getId() == auction_id);
-    }
-
     public void update(Auction auc, String[] params){
 
     }
 
-    public List<Auction> getAuctions() {
+    public List<Auction> getAll() {
         return auctions;
     }
 
-    public Auction getAuctionById(int id){
+    public Auction get(int id){
         for (Auction auc: auctions) {
             if(auc.getId() == id)
                 return auc;

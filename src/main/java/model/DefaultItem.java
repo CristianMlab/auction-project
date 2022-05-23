@@ -23,11 +23,23 @@ public class DefaultItem {
         return lotId + "," + description;
     }
 
-    public int get_lot_id(){
+    public int getLotId(){
         return lotId;
     }
 
     public void display(){
         System.out.println(description);
+    }
+
+    public void setLotId(int lotId) {
+        this.lotId = lotId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

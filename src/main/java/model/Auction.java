@@ -45,15 +45,7 @@ public class Auction {
         return lots.size();
     }
 
-    public ArrayList<Lot> getLots() {
-        return lots;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void add_lot(Lot new_lot){
+    public void addLot(Lot new_lot){
         if(new_lot.getAuctionId() == id)
             lots.add(new_lot);
         else
@@ -89,5 +81,46 @@ public class Auction {
         for (int i = 0; i < lots.size() ; i++) {
             System.out.println((i+1) + ". " + lots.get(i).getLotName());
         }
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDateTime getClosingDatetime() {
+        return closingDatetime;
+    }
+
+    public void setClosingDatetime(LocalDateTime closingDatetime) {
+        this.closingDatetime = closingDatetime;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public ArrayList<Lot> getLots() {
+        return lots;
+    }
+
+    public void setLots(ArrayList<Lot> lots) {
+        this.lots = lots;
     }
 }

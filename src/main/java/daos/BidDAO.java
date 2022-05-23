@@ -6,7 +6,7 @@ import model.Bid;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BidDAO {
+public class BidDAO implements DAO<Bid> {
     private List<Bid> bids = new ArrayList<>();
 
     public BidDAO() {
@@ -30,7 +30,11 @@ public class BidDAO {
 
     }
 
-    public List<Bid> getBids() {
+    public Bid get(int id){
+        return null;
+    }
+
+    public List<Bid> getAll() {
         return bids;
     }
 }

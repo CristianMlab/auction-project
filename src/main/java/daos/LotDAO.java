@@ -8,7 +8,7 @@ import model.Lot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LotDAO {
+public class LotDAO implements DAO<Lot> {
 
     private List<Lot> lots = new ArrayList<>();
 
@@ -50,13 +50,13 @@ public class LotDAO {
         //creating the lots using the items and bid histories
         ItemDAO itemDAO = new ItemDAO();
         BidHistoryDAO bidHistoryDAO = new BidHistoryDAO();
-        List<DefaultItem> items = itemDAO.getItems();
+        List<DefaultItem> items = itemDAO.getAll();
         for(DefaultItem item : items){
-            int id = item.get_lot_id();
-            BidHistory history = bidHistoryDAO.getHistoryByLot(id);
+            int id = item.getLotId();
+            BidHistory history = bidHistoryDAO.get(id);
 
-            getLotById(id).setBidHistory(history);
-            getLotById(id).setItem(item);
+            get(id).setBids(history);
+            get(id).setItem(item);
         }
     }
 
@@ -72,15 +72,15 @@ public class LotDAO {
 
     }
 
-    public Lot getLotById(int id){
+    public Lot get(int id){
         for (Lot lot: lots) {
-            if(lot.getLotId() == id)
+            if(lot.getId() == id)
                 return lot;
         }
         return null;
     }
 
-    public List<Lot> getLots() {
+    public List<Lot> getAll() {
         return lots;
     }
 }

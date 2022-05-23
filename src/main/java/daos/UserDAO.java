@@ -5,7 +5,7 @@ import model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO {
+public class UserDAO implements DAO<User> {
     private List<User> users = new ArrayList<>();
 
     public UserDAO() {
@@ -29,7 +29,15 @@ public class UserDAO {
 
     }
 
-    public List<User> getUsers() {
+    public User get(int id){
+        for (User user : users) {
+            if (user.getId() == id)
+                return user;
+        }
+        return null;
+    }
+
+    public List<User> getAll() {
         return users;
     }
 }

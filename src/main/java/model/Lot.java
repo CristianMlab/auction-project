@@ -45,30 +45,6 @@ public class Lot {
         return id + "," + auctionId + "," + lotName + "," + startingBid + "," + closingDatetime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    public DefaultItem getItem() {
-        return item;
-    }
-
-    public void setItem(DefaultItem item) {
-        this.item = item;
-    }
-
-    public void setBidHistory(BidHistory old_bids){
-        bids = old_bids;
-    }
-
-    public String getLotName() {
-        return lotName;
-    }
-
-    public int getAuctionId() {
-        return auctionId;
-    }
-
-    public int getLotId(){
-        return id;
-    }
-
     public double lastBidValue(){
         return bids.getLastBid().getValue();
     }
@@ -79,10 +55,6 @@ public class Lot {
 
     public int lastBidUser(){
         return bids.getLastBid().getUserId();
-    }
-
-    public BidHistory getBids() {
-        return bids;
     }
 
     public void bid(double value, int user_id){
@@ -126,4 +98,62 @@ public class Lot {
         System.out.println("Description:");
         item.display();
     }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getAuctionId() {
+        return auctionId;
+    }
+
+    public void setAuctionId(int auctionId) {
+        this.auctionId = auctionId;
+    }
+
+    public String getLotName() {
+        return lotName;
+    }
+
+    public void setLotName(String lotName) {
+        this.lotName = lotName;
+    }
+
+    public double getStartingBid() {
+        return startingBid;
+    }
+
+    public void setStartingBid(double startingBid) {
+        this.startingBid = startingBid;
+    }
+
+    public LocalDateTime getClosingDatetime() {
+        return closingDatetime;
+    }
+
+    public void setClosingDatetime(LocalDateTime closingDatetime) {
+        this.closingDatetime = closingDatetime;
+    }
+
+    public BidHistory getBids() {
+        return bids;
+    }
+
+    public void setBids(BidHistory bids) {
+        this.bids = bids;
+    }
+
+    public DefaultItem getItem() {
+        return item;
+    }
+
+    public void setItem(DefaultItem item) {
+        this.item = item;
+    }
+
 }

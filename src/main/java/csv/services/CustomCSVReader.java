@@ -7,7 +7,8 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 
 public class CustomCSVReader {
-    public static CustomCSVReader instance = null;
+    private static CustomCSVReader instance = null;
+
 
     public static CustomCSVReader getInstance() {
         if (instance == null)

@@ -1,28 +1,27 @@
 package daos;
 
-
 import model.Bid;
 import model.BidHistory;
 import model.DefaultItem;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BidHistoryDAO {
-
+public class BidHistoryDbDAO {
     private ArrayList<BidHistory> histories = new ArrayList<>();
 
-    public BidHistoryDAO() {
+    public BidHistoryDbDAO() throws SQLException {
         //creating an empty bid history for every item
-        ItemDAO x = new ItemDAO();
-        List<DefaultItem> items = x.getAll();
+        ItemDbDAO temp = new ItemDbDAO();
+        List<DefaultItem> items = temp.getAll();
         for(DefaultItem item : items){
-                histories.add(new BidHistory(item.getLotId()));
+            histories.add(new BidHistory(item.getLotId()));
         }
 
         //adding bids to the history
-        BidDAO bidDAO = new BidDAO();
-        List<Bid> bids = bidDAO.getAll();
+        BidDbDAO bidDbDAO = new BidDbDAO();
+        List<Bid> bids = bidDbDAO.getAll();
         for(Bid bid : bids){
             get(bid.getLotId()).addBid(bid);
         }

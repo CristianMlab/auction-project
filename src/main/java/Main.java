@@ -1,10 +1,10 @@
 import daos.*;
 import model.*;
-import csv.services.*;
 import services.AdminService;
 import services.BidderService;
 import services.SellerService;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -14,11 +14,23 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        AuctionDAO auctionDAO = new AuctionDAO();
-        LotDAO lotDAO = new LotDAO();
-        UserDAO userDAO = new UserDAO();
-        BidDAO bidDAO = new BidDAO();
-        ItemDAO itemDAO = new ItemDAO();
+        DAO<Auction> auctionDAO = new AuctionDAO();
+        DAO<Lot> lotDAO = new LotDAO();
+        DAO<User> userDAO = new UserDAO();
+        DAO<Bid> bidDAO = new BidDAO();
+        DAO<DefaultItem> itemDAO = new ItemDAO();
+
+        try {
+            auctionDAO = new AuctionDbDAO();
+            lotDAO = new LotDbDAO();
+            userDAO = new UserDbDAO();
+            bidDAO = new BidDbDAO();
+            itemDAO = new ItemDbDAO();
+            System.out.println("Working with DB");
+        } catch(SQLException e){
+            e.printStackTrace();
+            System.out.println("Working with CSV");
+        }
 
         BidderService bidderService = new BidderService(lotDAO, auctionDAO, userDAO, bidDAO);
         SellerService sellerService = new SellerService(lotDAO, auctionDAO, userDAO, bidDAO, itemDAO);
@@ -27,11 +39,16 @@ public class Main {
         Scanner in = new Scanner(System.in);
         String line;
 
+        boolean done = false;
+
         while ((line = in.nextLine()) != null) {
             List<String> cmd = Arrays.asList(line.split(" "));
 
-            System.out.println(cmd.get(0));
             switch (cmd.get(0)) {
+                case "display_all" -> {
+                    bidderService.displayAll();
+                }
+
                 case "display_auction" -> {
                     int id = Integer.parseInt(cmd.get(1));
                     bidderService.displayAuction(id);
@@ -69,12 +86,12 @@ public class Main {
 
                 case "delete_lot" -> {
                     int lotId = Integer.parseInt(cmd.get(1));
-                    adminService.deleteDefaultLot(lotDAO.getLotById(lotId));
+                    adminService.deleteDefaultLot(lotDAO.get(lotId));
                 }
 
                 case "delete_auction" -> {
                     int auctionId = Integer.parseInt(cmd.get(1));
-                    adminService.deleteAuction(auctionDAO.getAuctionById(auctionId));
+                    adminService.deleteAuction(auctionDAO.get(auctionId));
                 }
 
                 case "create_lot" -> {
@@ -82,7 +99,7 @@ public class Main {
                     int auctionId = Integer.parseInt(cmd.get(2));
                     String lotName = cmd.get(3);
                     String description = cmd.get(4);
-                    int startingBid = Integer.parseInt(cmd.get(5));
+                    double startingBid = Double.parseDouble(cmd.get(5));
                     LocalDateTime closingDateTime = LocalDateTime.parse(cmd.get(6), DateTimeFormatter.ofPattern("yyyy-MM-dd,HH:mm:ss"));
                     sellerService.createDefaultLot(lotId, auctionId, lotName, description, startingBid, closingDateTime);
                 }

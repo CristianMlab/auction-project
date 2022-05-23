@@ -9,13 +9,13 @@ import java.util.List;
 
 public class AdminService {
 
-    private BidDAO bidDAO;
-    private LotDAO lotDAO;
-    private AuctionDAO auctionDAO;
-    private UserDAO userDAO;
-    private ItemDAO itemDAO;
+    private DAO<Bid> bidDAO;
+    private DAO<Lot> lotDAO;
+    private DAO<Auction> auctionDAO;
+    private DAO<User> userDAO;
+    private DAO<DefaultItem> itemDAO;
 
-    public AdminService(LotDAO lotDAO, AuctionDAO auctionDAO, UserDAO userDAO, BidDAO bidDAO, ItemDAO itemDAO) {
+    public AdminService(DAO<Lot> lotDAO, DAO<Auction> auctionDAO, DAO<User> userDAO, DAO<Bid> bidDAO, DAO<DefaultItem> itemDAO) {
         this.lotDAO = lotDAO;
         this.auctionDAO = auctionDAO;
         this.userDAO = userDAO;
@@ -27,7 +27,7 @@ public class AdminService {
     public void deleteBid(Bid bid){
         bidDAO.delete(bid);
         try {
-            CustomCSVWriter.getInstance().writeAll(Bid.class, bidDAO.getBids(), "src/main/resources/csv/bids.csv", Bid.getHeader());
+            CustomCSVWriter.getInstance().writeAll(Bid.class, bidDAO.getAll(), "src/main/resources/csv/bids.csv", Bid.getHeader());
             AuditService.getInstance().log("delete bid", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
             e.printStackTrace();
@@ -40,13 +40,13 @@ public class AdminService {
             deleteBid(bid);
         }
 
-        DefaultItem item = itemDAO.getItemByLot(lot.getLotId());
+        DefaultItem item = itemDAO.get(lot.getId());
         itemDAO.delete(item);
         lotDAO.delete(lot);
 
         try {
-            CustomCSVWriter.getInstance().writeAll(DefaultItem.class, itemDAO.getItems(), "src/main/resources/csv/default_items.csv", DefaultItem.getHeader());
-            CustomCSVWriter.getInstance().writeAll(Lot.class, lotDAO.getLots(), "src/main/resources/csv/lots.csv", Lot.getHeader());
+            CustomCSVWriter.getInstance().writeAll(DefaultItem.class, itemDAO.getAll(), "src/main/resources/csv/defaultItems.csv", DefaultItem.getHeader());
+            CustomCSVWriter.getInstance().writeAll(Lot.class, lotDAO.getAll(), "src/main/resources/csv/lots.csv", Lot.getHeader());
             AuditService.getInstance().log("delete lot", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
             e.printStackTrace();
@@ -56,12 +56,12 @@ public class AdminService {
     public void deleteAuction(Auction auc){
         List<Lot> lots = auc.getLots();
         for (Lot lot: lots) {
-            deleteDefaultLot(lotDAO.getLotById(lot.getLotId()));
+            deleteDefaultLot(lotDAO.get(lot.getId()));
         }
 
         auctionDAO.delete(auc);
         try {
-            CustomCSVWriter.getInstance().writeAll(Auction.class, auctionDAO.getAuctions(), "src/main/resources/csv/auctions.csv", Auction.getHeader());
+            CustomCSVWriter.getInstance().writeAll(Auction.class, auctionDAO.getAll(), "src/main/resources/csv/auctions.csv", Auction.getHeader());
             AuditService.getInstance().log("delete auction", "src/main/resources/csv/audit.csv");
         } catch(Exception e){
             e.printStackTrace();

@@ -6,13 +6,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class AuditService {
-    public static AuditService instance = null;
+    private static AuditService instance = null;
 
     public static AuditService getInstance() {
         if (instance == null)
             instance = new AuditService();
         return instance;
     }
+
+    private AuditService(){}
 
     public void log(String action, String filename) throws IOException{
         FileWriter out = new FileWriter(filename, true);
